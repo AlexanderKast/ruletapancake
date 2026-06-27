@@ -248,26 +248,6 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Footer CTA */}
-        <div className="flex-none pb-4 px-5">
-          <div className="bg-white/5 border border-[#25E366]/20 rounded-2xl p-4 text-center">
-            <p className="text-white/40 text-xs mb-1">¿Quieres saber más sobre LiveCake?</p>
-            <p className="text-white font-bold text-sm">
-              WhatsApp:{' '}
-              <a
-                href="https://wa.me/573008520037?text=COMENZAR"
-                className="text-[#25E366] underline-offset-2 hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                +57 300 852 0037
-              </a>
-            </p>
-            <p className="text-white/50 text-xs mt-1">
-              Escribe <span className="text-white font-black">COMENZAR</span> · GRATIS AHORA
-            </p>
-          </div>
-        </div>
       </main>
 
       <ResultModal result={result} onClose={handleCloseModal} />

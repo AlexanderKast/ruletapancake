@@ -17,7 +17,8 @@ export const WHEEL_SEGMENTS = [
 ];
 
 export interface WheelHandle {
-  spinTo: (targetSegment: number, onComplete: () => void) => void;
+  startFreeSpin: () => void;
+  landAt: (targetSegment: number, onComplete: () => void) => void;
 }
 
 interface Props {
@@ -67,11 +68,9 @@ const Wheel = forwardRef<WheelHandle, Props>(({ size, isSpinning }, ref) => {
       ctx.rotate(rotation + i * segmentAngle - Math.PI / 2 + segmentAngle / 2);
       ctx.textAlign = 'right';
 
-      // Emoji
       ctx.font = `${size * 0.052}px serif`;
       ctx.fillText(seg.emoji, radius - 10, 6);
 
-      // Label — dos líneas si es largo
       ctx.font = `bold ${size * 0.031}px Poppins, sans-serif`;
       ctx.fillStyle = '#FFFFFF';
       ctx.shadowColor = 'rgba(0,0,0,1)';
@@ -80,7 +79,6 @@ const Wheel = forwardRef<WheelHandle, Props>(({ size, isSpinning }, ref) => {
       if (seg.name.length <= 12) {
         ctx.fillText(seg.name, radius - size * 0.065, 6);
       } else {
-        // Split roughly in half
         const mid = Math.ceil(words.length / 2);
         const line1 = words.slice(0, mid).join(' ');
         const line2 = words.slice(mid).join(' ');
@@ -129,19 +127,39 @@ const Wheel = forwardRef<WheelHandle, Props>(({ size, isSpinning }, ref) => {
   }, [drawWheel]);
 
   useImperativeHandle(ref, () => ({
-    spinTo: (targetSegment: number, onComplete: () => void) => {
+    // Giro libre a velocidad constante — arranca al instante
+    startFreeSpin: () => {
+      cancelAnimationFrame(animationRef.current);
+      const SPEED = Math.PI * 5.5; // ~2.75 rotaciones/segundo
+      let lastTime = performance.now();
+
+      function tick(now: number) {
+        const dt = Math.min((now - lastTime) / 1000, 0.05);
+        lastTime = now;
+        currentRotationRef.current += SPEED * dt;
+        drawWheel(currentRotationRef.current);
+        animationRef.current = requestAnimationFrame(tick);
+      }
+      animationRef.current = requestAnimationFrame(tick);
+    },
+
+    // Aterriza suavemente desde la posición actual hasta el segmento objetivo
+    landAt: (targetSegment: number, onComplete: () => void) => {
+      cancelAnimationFrame(animationRef.current);
+
       const segmentAngle = (2 * Math.PI) / WHEEL_SEGMENTS.length;
-      // To land on targetSegment: center of that segment should be at top (pointer)
-      // center of segment i = rotation + i*segmentAngle + segmentAngle/2 - PI/2 = -PI/2
-      // => rotation = -i*segmentAngle - segmentAngle/2
       const targetAngle = -(targetSegment * segmentAngle + segmentAngle / 2);
       const normalizedTarget = ((targetAngle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
-      const minSpins = 6;
-      const totalRotation = minSpins * 2 * Math.PI + normalizedTarget;
+      const normalizedCurrent = ((currentRotationRef.current % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
 
-      const startRotation = currentRotationRef.current;
-      const endRotation = startRotation + totalRotation;
-      const duration = 5500 + Math.random() * 800;
+      // Siempre avanzar (nunca retroceder) + 2 vueltas completas extra
+      let delta = normalizedTarget - normalizedCurrent;
+      if (delta <= 0) delta += 2 * Math.PI;
+      delta += 2 * Math.PI * 2;
+
+      const startRot = currentRotationRef.current;
+      const endRot = startRot + delta;
+      const duration = 3800;
       const startTime = performance.now();
 
       function easeOut(t: number): number {
@@ -149,44 +167,32 @@ const Wheel = forwardRef<WheelHandle, Props>(({ size, isSpinning }, ref) => {
       }
 
       function animate(now: number) {
-        const elapsed = now - startTime;
-        const t = Math.min(elapsed / duration, 1);
-        const easedT = easeOut(t);
-        currentRotationRef.current = startRotation + (endRotation - startRotation) * easedT;
+        const t = Math.min((now - startTime) / duration, 1);
+        currentRotationRef.current = startRot + (endRot - startRot) * easeOut(t);
         drawWheel(currentRotationRef.current);
-
         if (t < 1) {
           animationRef.current = requestAnimationFrame(animate);
         } else {
-          currentRotationRef.current = endRotation % (2 * Math.PI);
+          currentRotationRef.current = endRot;
           onComplete();
         }
       }
-
-      cancelAnimationFrame(animationRef.current);
       animationRef.current = requestAnimationFrame(animate);
     },
   }));
 
   return (
     <div className="relative flex items-center justify-center">
-      {/* Pointer arrow */}
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 z-20"
-        style={{
-          filter: 'drop-shadow(0 2px 8px rgba(250,70,22,0.9))',
-          marginTop: '-2px',
-        }}
+        style={{ filter: 'drop-shadow(0 2px 10px rgba(30,136,229,0.9))', marginTop: '-2px' }}
       >
-        <div
-          style={{
-            width: 0,
-            height: 0,
-            borderLeft: '14px solid transparent',
-            borderRight: '14px solid transparent',
-            borderTop: '32px solid #1E88E5',
-          }}
-        />
+        <div style={{
+          width: 0, height: 0,
+          borderLeft: '14px solid transparent',
+          borderRight: '14px solid transparent',
+          borderTop: '32px solid #1E88E5',
+        }} />
       </div>
 
       <canvas

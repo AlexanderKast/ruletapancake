@@ -119,35 +119,43 @@ export default function Home() {
     setResult(null);
     setShowConfetti(false);
 
-    let tickSpeed = 80;
+    const spinStartTime = performance.now();
+
+    // 1. Rueda y sonido arrancan INMEDIATAMENTE
+    wheelRef.current?.startFreeSpin();
+
     function scheduleTick() {
       playTick();
-      tickSpeed = Math.min(tickSpeed * 1.015, 350);
-      tickTimerRef.current = setTimeout(scheduleTick, tickSpeed);
+      tickTimerRef.current = setTimeout(scheduleTick, 85);
     }
     scheduleTick();
 
     try {
+      // 2. API call en paralelo mientras la rueda ya gira
       const response = await fetch('/api/spin', { method: 'POST' });
       const data: SpinResult = await response.json();
 
-      setTimeout(() => {
-        if (tickTimerRef.current) clearTimeout(tickTimerRef.current);
+      // 3. Mínimo 1.8s de giro libre para buena experiencia visual
+      const elapsed = performance.now() - spinStartTime;
+      const remaining = Math.max(0, 1800 - elapsed);
+      await new Promise(r => setTimeout(r, remaining));
 
-        wheelRef.current?.spinTo(data.target_segment, () => {
-          setTimeout(() => {
-            setResult(data);
-            setIsSpinning(false);
-            if (data.is_winner) {
-              playFanfare();
-              setShowConfetti(true);
-              setTimeout(() => setShowConfetti(false), 4500);
-            } else {
-              playTryAgain();
-            }
-          }, 400);
-        });
-      }, 1800);
+      // 4. Detener ticks y aterrizar suavemente en el segmento correcto
+      if (tickTimerRef.current) clearTimeout(tickTimerRef.current);
+
+      wheelRef.current?.landAt(data.target_segment, () => {
+        setTimeout(() => {
+          setResult(data);
+          setIsSpinning(false);
+          if (data.is_winner) {
+            playFanfare();
+            setShowConfetti(true);
+            setTimeout(() => setShowConfetti(false), 4500);
+          } else {
+            playTryAgain();
+          }
+        }, 400);
+      });
     } catch {
       if (tickTimerRef.current) clearTimeout(tickTimerRef.current);
       setIsSpinning(false);

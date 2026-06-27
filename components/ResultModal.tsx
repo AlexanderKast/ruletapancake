@@ -145,7 +145,8 @@ export default function ResultModal({ result, onClose }: Props) {
                       value={nombre}
                       onChange={e => setNombre(e.target.value)}
                       placeholder="Tu nombre"
-                      className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-white text-sm placeholder-white/30 focus:outline-none focus:border-[#1E88E5] transition-colors"
+                      className="w-full rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1E88E5] transition-colors"
+                    style={{ background: '#1e2535', color: '#ffffff', border: '1px solid rgba(255,255,255,0.2)' }}
                       autoComplete="name"
                     />
                   </div>
@@ -158,7 +159,8 @@ export default function ResultModal({ result, onClose }: Props) {
                       value={email}
                       onChange={e => setEmail(e.target.value)}
                       placeholder="tu@email.com"
-                      className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-white text-sm placeholder-white/30 focus:outline-none focus:border-[#1E88E5] transition-colors"
+                      className="w-full rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1E88E5] transition-colors"
+                    style={{ background: '#1e2535', color: '#ffffff', border: '1px solid rgba(255,255,255,0.2)' }}
                       autoComplete="email"
                     />
                   </div>
@@ -171,7 +173,8 @@ export default function ResultModal({ result, onClose }: Props) {
                       value={whatsapp}
                       onChange={e => setWhatsapp(e.target.value)}
                       placeholder="+57 300 000 0000"
-                      className="w-full bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-white text-sm placeholder-white/30 focus:outline-none focus:border-[#1E88E5] transition-colors"
+                      className="w-full rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1E88E5] transition-colors"
+                    style={{ background: '#1e2535', color: '#ffffff', border: '1px solid rgba(255,255,255,0.2)' }}
                       autoComplete="tel"
                     />
                   </div>

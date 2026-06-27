@@ -67,16 +67,27 @@ const Wheel = forwardRef<WheelHandle, Props>(({ size, isSpinning }, ref) => {
       ctx.rotate(rotation + i * segmentAngle - Math.PI / 2 + segmentAngle / 2);
       ctx.textAlign = 'right';
 
-      ctx.font = `${size * 0.055}px serif`;
-      ctx.fillText(seg.emoji, radius - 8, 6);
+      // Emoji
+      ctx.font = `${size * 0.052}px serif`;
+      ctx.fillText(seg.emoji, radius - 10, 6);
 
-      ctx.font = `bold ${size * 0.033}px Poppins, sans-serif`;
+      // Label — dos líneas si es largo
+      ctx.font = `bold ${size * 0.031}px Poppins, sans-serif`;
       ctx.fillStyle = '#FFFFFF';
-      ctx.shadowColor = 'rgba(0,0,0,0.9)';
-      ctx.shadowBlur = 4;
-      const maxLen = 10;
-      const label = seg.name.length > maxLen ? seg.name.slice(0, maxLen) + '…' : seg.name;
-      ctx.fillText(label, radius - size * 0.075, 6);
+      ctx.shadowColor = 'rgba(0,0,0,1)';
+      ctx.shadowBlur = 5;
+      const words = seg.name.split(' ');
+      if (seg.name.length <= 12) {
+        ctx.fillText(seg.name, radius - size * 0.065, 6);
+      } else {
+        // Split roughly in half
+        const mid = Math.ceil(words.length / 2);
+        const line1 = words.slice(0, mid).join(' ');
+        const line2 = words.slice(mid).join(' ');
+        const lineH = size * 0.033;
+        ctx.fillText(line1, radius - size * 0.065, -lineH / 2 + 3);
+        ctx.fillText(line2, radius - size * 0.065,  lineH / 2 + 3);
+      }
       ctx.restore();
     });
 

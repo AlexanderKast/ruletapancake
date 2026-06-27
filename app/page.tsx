@@ -104,9 +104,9 @@ export default function Home() {
     function updateSize() {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      const maxFromWidth = vw * 0.85;
-      const maxFromHeight = vh * 0.40;
-      setWheelSize(Math.min(maxFromWidth, maxFromHeight, 500));
+      const maxFromWidth = vw * 0.92;
+      const maxFromHeight = vh * 0.52;
+      setWheelSize(Math.min(maxFromWidth, maxFromHeight, 620));
     }
     updateSize();
     window.addEventListener('resize', updateSize);

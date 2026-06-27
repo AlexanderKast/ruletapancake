@@ -44,8 +44,30 @@ CREATE POLICY "anon_select_winners_feed" ON public.winners_feed
 ALTER PUBLICATION supabase_realtime ADD TABLE public.spins;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.winners_feed;
 
+-- Tabla: leads (captura de datos de ganadores)
+CREATE TABLE IF NOT EXISTS public.leads (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at timestamptz DEFAULT now(),
+  nombre text NOT NULL,
+  email text NOT NULL,
+  whatsapp text NOT NULL,
+  prize_name text NOT NULL,
+  session_date date DEFAULT current_date
+);
+
+ALTER TABLE public.leads ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "anon_insert_leads" ON public.leads
+  FOR INSERT TO anon WITH CHECK (true);
+
+-- Solo lectura con service_role (para exportar desde el dashboard)
+CREATE POLICY "service_select_leads" ON public.leads
+  FOR SELECT TO service_role USING (true);
+
 -- Índices para performance
 CREATE INDEX IF NOT EXISTS spins_session_date_idx ON public.spins (session_date);
 CREATE INDEX IF NOT EXISTS spins_session_date_winner_idx ON public.spins (session_date, is_winner);
 CREATE INDEX IF NOT EXISTS winners_feed_session_date_idx ON public.winners_feed (session_date);
 CREATE INDEX IF NOT EXISTS winners_feed_created_at_idx ON public.winners_feed (created_at DESC);
+CREATE INDEX IF NOT EXISTS leads_session_date_idx ON public.leads (session_date);
+CREATE INDEX IF NOT EXISTS leads_created_at_idx ON public.leads (created_at DESC);

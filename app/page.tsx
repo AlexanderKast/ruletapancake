@@ -1,5 +1,6 @@
 'use client';
 import { useRef, useState, useCallback, useEffect } from 'react';
+import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import Wheel, { WheelHandle } from '@/components/Wheel';
 import ResultModal from '@/components/ResultModal';
@@ -172,19 +173,20 @@ export default function Home() {
 
       <main
         className="main-content relative z-10 flex flex-col h-dvh w-dvw overflow-hidden select-none"
-        style={{ background: 'radial-gradient(ellipse at top, #1a0800 0%, #0D0D0D 60%)' }}
+        style={{ background: 'radial-gradient(ellipse at top, #061428 0%, #0D0D0D 60%)' }}
       >
         {/* Header */}
-        <div className="flex-none pt-4 px-5 pb-2">
+        <div className="flex-none pt-3 px-5 pb-1">
+          {/* Logo Pancake + Live indicator */}
           <div className="flex items-center justify-between mb-2">
-            <div className="flex gap-2">
-              <span className="px-3 py-1 rounded-full text-xs font-black bg-[#FA4616] text-white tracking-wide">
-                BOTCAKE
-              </span>
-              <span className="px-3 py-1 rounded-full text-xs font-black bg-[#25E366] text-black tracking-wide">
-                LiveCake
-              </span>
-            </div>
+            <Image
+              src="/logo-pancake.png"
+              alt="Pancake"
+              width={160}
+              height={36}
+              className="object-contain"
+              priority
+            />
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-red-500 blink-dot" />
               <span className="text-white/50 text-xs font-semibold uppercase tracking-widest">Live</span>
@@ -197,12 +199,12 @@ export default function Home() {
             </h1>
             <h1
               className="text-3xl font-black leading-tight tracking-tight uppercase"
-              style={{ color: '#FA4616', textShadow: '0 0 30px #FA461666' }}
+              style={{ color: '#1E88E5', textShadow: '0 0 30px #1E88E566' }}
             >
               y Gana Premios
             </h1>
             <p className="text-white/40 text-xs font-semibold mt-1 flex items-center justify-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#FA4616] inline-block" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#1E88E5] inline-block" />
               Hotmart FIRE Festival 2026
             </p>
           </div>
@@ -235,7 +237,7 @@ export default function Home() {
             style={{
               background: isSpinning
                 ? '#555'
-                : 'linear-gradient(135deg, #FA4616 0%, #FF6B35 50%, #FA4616 100%)',
+                : 'linear-gradient(135deg, #1565C0 0%, #1E88E5 50%, #2196F3 100%)',
             }}
           >
             {isSpinning ? (
@@ -246,6 +248,18 @@ export default function Home() {
               '🎰 ¡GIRA Y GANA!'
             )}
           </button>
+        </div>
+
+        {/* Partners banner */}
+        <div className="flex-none px-0 pb-2">
+          <Image
+            src="/partners-banner.jpg"
+            alt="Pancake · Meta Business Partner · Google Partner · TikTok Marketing Partner"
+            width={1080}
+            height={103}
+            className="w-full object-contain"
+            priority
+          />
         </div>
 
       </main>

@@ -82,13 +82,13 @@ const Wheel = forwardRef<WheelHandle, Props>(({ size, isSpinning }, ref) => {
 
     // Center circle
     const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, size * 0.12);
-    gradient.addColorStop(0, '#FF6B35');
-    gradient.addColorStop(1, '#FA4616');
+    gradient.addColorStop(0, '#2196F3');
+    gradient.addColorStop(1, '#1565C0');
     ctx.beginPath();
     ctx.arc(cx, cy, size * 0.12, 0, 2 * Math.PI);
     ctx.fillStyle = gradient;
     ctx.fill();
-    ctx.strokeStyle = '#FFD700';
+    ctx.strokeStyle = '#FFFFFF';
     ctx.lineWidth = 3;
     ctx.stroke();
 
@@ -103,12 +103,12 @@ const Wheel = forwardRef<WheelHandle, Props>(({ size, isSpinning }, ref) => {
     // Outer ring
     ctx.beginPath();
     ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
-    ctx.strokeStyle = '#FA4616';
+    ctx.strokeStyle = '#1E88E5';
     ctx.lineWidth = 4;
     ctx.stroke();
     ctx.beginPath();
     ctx.arc(cx, cy, radius - 5, 0, 2 * Math.PI);
-    ctx.strokeStyle = 'rgba(255,215,0,0.3)';
+    ctx.strokeStyle = 'rgba(33,150,243,0.3)';
     ctx.lineWidth = 2;
     ctx.stroke();
   }, [size]);
@@ -173,7 +173,7 @@ const Wheel = forwardRef<WheelHandle, Props>(({ size, isSpinning }, ref) => {
             height: 0,
             borderLeft: '14px solid transparent',
             borderRight: '14px solid transparent',
-            borderTop: '32px solid #FA4616',
+            borderTop: '32px solid #1E88E5',
           }}
         />
       </div>

@@ -22,8 +22,8 @@ body {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px #FA4616, 0 0 40px #FA4616, 0 0 80px #FA461633; }
-  50% { box-shadow: 0 0 30px #FA4616, 0 0 60px #FA4616, 0 0 120px #FA461666; }
+  0%, 100% { box-shadow: 0 0 20px #1E88E5, 0 0 40px #1E88E5, 0 0 80px #1E88E533; }
+  50% { box-shadow: 0 0 30px #1E88E5, 0 0 60px #2196F3, 0 0 120px #1E88E566; }
 }
 
 @keyframes fire-particle {
@@ -55,11 +55,11 @@ body {
 }
 
 .wheel-glow {
-  filter: drop-shadow(0 0 20px #FA4616) drop-shadow(0 0 40px #FA461666);
+  filter: drop-shadow(0 0 20px #1E88E5) drop-shadow(0 0 40px #1E88E566);
 }
 
 .wheel-glow-spinning {
-  filter: drop-shadow(0 0 30px #FA4616) drop-shadow(0 0 60px #FA4616) drop-shadow(0 0 100px #FA461699);
+  filter: drop-shadow(0 0 30px #2196F3) drop-shadow(0 0 60px #1E88E5) drop-shadow(0 0 100px #2196F399);
 }
 
 @media (orientation: landscape) and (max-height: 600px) {

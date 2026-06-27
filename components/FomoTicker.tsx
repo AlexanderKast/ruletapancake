@@ -59,7 +59,7 @@ export default function FomoTicker() {
   const tickerText = items.join('   ·   ') + '   ·   ';
 
   return (
-    <div className="w-full bg-[#FA4616] overflow-hidden py-2 relative z-10">
+    <div className="w-full overflow-hidden py-2 relative z-10" style={{ background: 'linear-gradient(90deg, #1565C0, #1E88E5, #2196F3, #1E88E5, #1565C0)' }}>
       <div
         className="flex whitespace-nowrap text-white font-semibold text-sm"
         style={{ animation: 'ticker-scroll 30s linear infinite' }}

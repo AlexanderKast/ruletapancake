@@ -34,7 +34,7 @@ export default function CounterBar({ initialSpins, initialWinners }: Props) {
   return (
     <div className="flex gap-3 justify-center z-10">
       <div className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-center">
-        <div className="text-2xl font-black text-[#FA4616]">{spins}</div>
+        <div className="text-2xl font-black text-[#1E88E5]">{spins}</div>
         <div className="text-xs text-white/60 font-medium">Girando hoy</div>
       </div>
       <div className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-center">

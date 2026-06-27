@@ -3,17 +3,17 @@ import { useRef, useEffect, useCallback, forwardRef, useImperativeHandle } from 
 
 export const WHEEL_SEGMENTS = [
   { name: "85% OFF + Asesoría", emoji: "🔥", color: "#FA4616" },
-  { name: "Sigue intentando", emoji: "💪", color: "#444444" },
-  { name: "Config. LiveCake", emoji: "🎬", color: "#FF6B35" },
-  { name: "Sigue intentando", emoji: "💪", color: "#333333" },
-  { name: "Certificación", emoji: "🏆", color: "#25E366" },
-  { name: "Sigue intentando", emoji: "💪", color: "#444444" },
-  { name: "Hora asesoría", emoji: "💡", color: "#FFD700" },
-  { name: "Sigue intentando", emoji: "💪", color: "#333333" },
-  { name: "Libro Mauricio", emoji: "📚", color: "#9B59B6" },
-  { name: "Sigue intentando", emoji: "💪", color: "#444444" },
-  { name: "Sigue intentando", emoji: "💪", color: "#333333" },
-  { name: "Sigue intentando", emoji: "💪", color: "#444444" },
+  { name: "Libro Mauricio",     emoji: "📚", color: "#9B59B6" },
+  { name: "Hora asesoría",      emoji: "💡", color: "#FFD700" },
+  { name: "Sigue intentando",   emoji: "💪", color: "#444444" },
+  { name: "Certificación",      emoji: "🏆", color: "#25E366" },
+  { name: "Config. LiveCake",   emoji: "🎬", color: "#FF6B35" },
+  { name: "85% OFF + Asesoría", emoji: "🔥", color: "#FA4616" },
+  { name: "Libro Mauricio",     emoji: "📚", color: "#9B59B6" },
+  { name: "Hora asesoría",      emoji: "💡", color: "#FFD700" },
+  { name: "Sigue intentando",   emoji: "💪", color: "#333333" },
+  { name: "Certificación",      emoji: "🏆", color: "#25E366" },
+  { name: "Config. LiveCake",   emoji: "🎬", color: "#FF6B35" },
 ];
 
 export interface WheelHandle {

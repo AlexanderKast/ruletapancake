@@ -104,9 +104,9 @@ export default function Home() {
     function updateSize() {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      const maxFromWidth = vw * 0.92;
-      const maxFromHeight = vh * 0.52;
-      setWheelSize(Math.min(maxFromWidth, maxFromHeight, 620));
+      const maxFromWidth = vw * 0.90;
+      const maxFromHeight = vh * 0.62;
+      setWheelSize(Math.min(maxFromWidth, maxFromHeight, 900));
     }
     updateSize();
     window.addEventListener('resize', updateSize);
@@ -183,35 +183,21 @@ export default function Home() {
         className="main-content relative z-10 flex flex-col h-dvh w-dvw overflow-hidden select-none"
         style={{ background: 'radial-gradient(ellipse at top, #061428 0%, #0D0D0D 60%)' }}
       >
-        {/* Header */}
-        <div className="flex-none pt-3 px-5 pb-1">
-          {/* Logo Pancake + Live indicator */}
-          <div className="flex items-center justify-between mb-2">
-            <Image
-              src="/logo-pancake.png"
-              alt="Pancake"
-              width={160}
-              height={36}
-              className="object-contain"
-              priority
-            />
-            <div className="flex items-center gap-2">
+        {/* Header compacto */}
+        <div className="flex-none pt-2 px-4 pb-1">
+          <div className="flex items-center justify-between">
+            <Image src="/logo-pancake.png" alt="Pancake" width={130} height={28} className="object-contain" priority />
+            <div className="flex items-center gap-1.5">
               <div className="w-2 h-2 rounded-full bg-red-500 blink-dot" />
               <span className="text-white/50 text-xs font-semibold uppercase tracking-widest">Live</span>
             </div>
           </div>
-
-          <div className="text-center mt-1">
-            <h1 className="text-3xl font-black text-white leading-tight tracking-tight uppercase">
-              Gira la Ruleta
+          <div className="text-center mt-0.5">
+            <h1 className="text-2xl font-black text-white leading-none tracking-tight uppercase">
+              Gira la Ruleta &nbsp;
+              <span style={{ color: '#1E88E5', textShadow: '0 0 20px #1E88E566' }}>y Gana Premios</span>
             </h1>
-            <h1
-              className="text-3xl font-black leading-tight tracking-tight uppercase"
-              style={{ color: '#1E88E5', textShadow: '0 0 30px #1E88E566' }}
-            >
-              y Gana Premios
-            </h1>
-            <p className="text-white/40 text-xs font-semibold mt-1 flex items-center justify-center gap-1.5">
+            <p className="text-white/40 text-xs font-semibold mt-0.5 flex items-center justify-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#1E88E5] inline-block" />
               Hotmart FIRE Festival 2026
             </p>
@@ -224,13 +210,13 @@ export default function Home() {
         </div>
 
         {/* Counters */}
-        <div className="flex-none py-2 px-5">
+        <div className="flex-none py-1 px-4">
           <CounterBar initialSpins={stats.spins_today} initialWinners={stats.winners_today} />
         </div>
 
         {/* Wheel + Button */}
-        <div className="flex-1 flex flex-col items-center justify-center gap-4 px-4 min-h-0 py-2">
-          <div className="relative pt-3">
+        <div className="flex-1 flex flex-col items-center justify-center gap-2 px-2 min-h-0">
+          <div className="relative">
             <Wheel ref={wheelRef} size={wheelSize} isSpinning={isSpinning} />
           </div>
 
@@ -238,7 +224,7 @@ export default function Home() {
             onClick={handleSpin}
             disabled={isSpinning}
             className={`
-              w-full max-w-xs py-5 rounded-2xl font-black text-xl text-white
+              w-full max-w-sm py-4 rounded-2xl font-black text-xl text-white
               transition-all duration-200 relative overflow-hidden
               ${isSpinning ? 'opacity-60 cursor-not-allowed scale-95' : 'pulse-glow hover:scale-105 active:scale-95'}
             `}

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface Props {
   visible: boolean;
   prediction: { colombia: number; portugal: number };
-  onSuccess: (nombre: string) => void;
+  onSuccess: (nombre: string, email: string, whatsapp: string) => void;
   onClose: () => void;
 }
 
@@ -22,37 +22,22 @@ export default function LeadFormModal({ visible, prediction, onSuccess, onClose 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  async function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!nombre.trim() || !email.trim() || !whatsapp.trim()) {
       setError('Completa todos los campos para participar.');
       return;
     }
-    setLoading(true);
-    setError('');
-    try {
-      await fetch('/api/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nombre,
-          email,
-          whatsapp,
-          prize_name: 'Participante',
-          prediction_colombia: prediction.colombia,
-          prediction_portugal: prediction.portugal,
-        }),
-      });
-      const savedName = nombre.trim();
-      setNombre('');
-      setEmail('');
-      setWhatsapp('');
-      onSuccess(savedName);
-    } catch {
-      setError('Ocurrió un error. Intenta de nuevo.');
-    } finally {
-      setLoading(false);
-    }
+    // Datos se guardan en el padre; el insert BD ocurre al terminar el giro
+    // para tener pronóstico + premio en el mismo registro.
+    const savedNombre = nombre.trim();
+    const savedEmail = email.trim();
+    const savedWhatsapp = whatsapp.trim();
+    setNombre('');
+    setEmail('');
+    setWhatsapp('');
+    setLoading(false);
+    onSuccess(savedNombre, savedEmail, savedWhatsapp);
   }
 
   return (

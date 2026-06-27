@@ -95,6 +95,10 @@ export default function Home() {
   const [prediction, setPrediction] = useState({ colombia: 1, portugal: 0 });
   const [participantName, setParticipantName] = useState('');
 
+  // Datos del participante guardados en ref para evitar stale closure en handleSpin
+  const leadDataRef = useRef({ nombre: '', email: '', whatsapp: '' });
+  const predictionRef = useRef({ colombia: 1, portugal: 0 });
+
   // ── Wheel ──
   const wheelRef = useRef<WheelHandle>(null);
   const [isSpinning, setIsSpinning] = useState(false);
@@ -121,11 +125,13 @@ export default function Home() {
   }, []);
 
   const handleParticipate = useCallback((pred: { colombia: number; portugal: number }) => {
+    predictionRef.current = pred;
     setPrediction(pred);
     setShowLeadForm(true);
   }, []);
 
-  const handleLeadSuccess = useCallback((nombre: string) => {
+  const handleLeadSuccess = useCallback((nombre: string, email: string, whatsapp: string) => {
+    leadDataRef.current = { nombre, email, whatsapp };
     setParticipantName(nombre);
     setShowLeadForm(false);
     setAppStep('wheel');
@@ -153,6 +159,22 @@ export default function Home() {
       await new Promise(r => setTimeout(r, Math.max(0, 1800 - elapsed)));
       if (tickTimerRef.current) clearTimeout(tickTimerRef.current);
       wheelRef.current?.landAt(data.target_segment, () => {
+        // Insert único con pronóstico + premio en el mismo registro
+        const ld = leadDataRef.current;
+        const pred = predictionRef.current;
+        fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nombre: ld.nombre,
+            email: ld.email,
+            whatsapp: ld.whatsapp,
+            prize_name: data.prize_name,
+            prediction_colombia: pred.colombia,
+            prediction_portugal: pred.portugal,
+          }),
+        }).catch(() => {});
+
         setTimeout(() => {
           setResult(data);
           setIsSpinning(false);
@@ -178,6 +200,8 @@ export default function Home() {
     setAppStep('predict');
     setParticipantName('');
     setPrediction({ colombia: 1, portugal: 0 });
+    leadDataRef.current = { nombre: '', email: '', whatsapp: '' };
+    predictionRef.current = { colombia: 1, portugal: 0 };
   }, []);
 
   return (
